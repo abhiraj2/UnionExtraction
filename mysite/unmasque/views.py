@@ -85,6 +85,7 @@ def func_start(connHelper, query, request):
 def check_progress(request, token):
     print("...Checking Progress...")
     state_changed, state_msg, info, io, exec_states, curr_states = func_check_progress(request, token)
+    print(state_changed, state_msg, io, exec_states, curr_states)
     return JsonResponse({'state_changed': state_changed, 'progress_message': state_msg, 'state_info': info, 'io': io, 'done_states': exec_states, "curr_states": curr_states}, safe=False)
 
 

@@ -70,8 +70,9 @@ class ViewMinimizer(Minimizer):
             core_sizes = self.do_viewBased_binary_halving(core_sizes, query, tabname, rctid, view_name)
             core_sizes = self.do_copyBased_binary_halving(core_sizes, query, tabname,
                                                           self.connectionHelper.queries.get_tabname_1(tabname))
-
+            self.logger.debug("Doing Sanity Check")
             if not self.sanity_check(query):
+                self.logger.debug("SANITY CHECK FAILED")
                 return False
 
         for tabname in self.core_relations:
@@ -79,7 +80,7 @@ class ViewMinimizer(Minimizer):
                 [self.connectionHelper.queries.drop_table_cascade(self.connectionHelper.queries.get_tabname_4(tabname)),
                  self.connectionHelper.queries.create_table_as_select_star_from(
                      self.connectionHelper.queries.get_tabname_4(tabname), tabname)])
-
+        self.logger.debug("Returning Now")
         self.populate_dict_info()
         return True
 
@@ -92,6 +93,7 @@ class ViewMinimizer(Minimizer):
             core_sizes = self.do_copyBased_binary_halving(core_sizes, query, tabname, view_name)
 
             if not self.sanity_check(query):
+                self.logger.debug("SANITY CHECK FAILED")
                 return False
 
         for tabname in self.core_relations:
@@ -105,16 +107,40 @@ class ViewMinimizer(Minimizer):
 
     def do_copyBased_binary_halving(self, core_sizes, query, tabname, tabname1):
         while int(core_sizes[tabname]) > self.max_row_no:
+            self.logger.debug("PROBLEM if ENTERING")
             end_ctid, start_ctid = self.get_start_and_end_ctids(core_sizes, query, tabname, tabname1)
             core_sizes = self.update_with_remaining_size(core_sizes, end_ctid, start_ctid, tabname, tabname1)
+        self.logger.debug("Core Size: ", core_sizes)
         return core_sizes
 
     def populate_dict_info(self):
         # POPULATE MIN INSTANCE DICT
+        self.logger.debug(self.global_min_instance_dict)
         for tabname in self.core_relations:
             self.global_min_instance_dict[tabname] = []
-            sql_query = pd.read_sql_query(self.connectionHelper.queries.get_star(tabname), self.connectionHelper.conn)
-            df = pd.DataFrame(sql_query)
+            self.logger.debug(self.connectionHelper.queries.get_star(tabname))
+            self.logger.debug(self.global_min_instance_dict)
+            res = None
+            try:
+                res = self.connectionHelper.execute_sql_fetchall(self.connectionHelper.queries.get_star(tabname))
+            except Exception as e:
+                self.logger.debug("problem, ", e)
+            
+            sql_query = []
+            try:
+                cols = []
+                for i in range(len(res[1])):
+                    cols.append(res[1][i].name)
+                sql_query.append(res[0][0])
+                self.logger.debug(cols, res[0][0])
+            # try:
+            #     sql_query = pd.read_sql_query(self.connectionHelper.queries.get_star(tabname), self.connectionHelper.conn)
+            except Exception as e:
+                self.logger.debug("Problem encountered", e)  
+            self.logger.debug("sql", sql_query)
+            df = pd.DataFrame(sql_query, columns = cols)
+            self.logger.debug("Table ", df)
             self.global_min_instance_dict[tabname].append(tuple(df.columns))
             for index, row in df.iterrows():
                 self.global_min_instance_dict[tabname].append(tuple(row))
+        self.logger.debug("Done Populating")

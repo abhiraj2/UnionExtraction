@@ -314,7 +314,7 @@ svg:has(>.path.done) + div{
 
 #restore_db > div{
     position: absolute;
-    top:25px;
+    top:30px;
     left: 95px;
 }
 
@@ -327,37 +327,37 @@ svg:has(>.path.done) + div{
     position: relative;
 }
 
-#min_db_t{
+#minDb_filter{
     position: absolute;
     top: 70px;
     left: -70px;
 }
 
-#nep_t{
+#nep_minDb{
     position:absolute;
     top: -225px;
     left:-1321px;
 }
 
-#nep_t2{
+#nep_oj{
     position:absolute;
     top: -92px;
     left: -1141px;
 }
 
-#filter_t{
+#filter_nep{
     position:absolute;
     top: 120px;
     left: 30px;
 }
 
-#limit_t{
+#limit_resComp{
     position:absolute;
     top: 33px;
     left: -157px;
 }
 
-#oj_t{
+#oj_resComp{
     position:absolute;
     top: 215px;
     left: -1142px;
@@ -369,7 +369,7 @@ svg:has(>.path.done) + div{
     left: -91px;
 }
 
-#res_finish{
+#resComp_finish{
     position:absolute;
     top: 182px;
     left: -484px;
@@ -382,7 +382,7 @@ svg:has(>.path.done) + div{
     left: -108px;
 }
 
-#rdb_t{
+#inequality_restore{
     position:absolute;
     top: -134px;
     left: 152px;
@@ -400,7 +400,7 @@ svg:has(>.path.done) + div{
     left: 52px;
 }
 
-#projection_t{
+#projection_groupBy{
     position:absolute;
     top: -124px;
     left: 26px;
@@ -427,14 +427,14 @@ svg:has(>.path.done) + div{
 
 #sampling > div{
     position: absolute;
-    top:40px;
-    left: 100px;
+    top:49px;
+    left: 79px;
 }
 
 #min_db > div{
     position: absolute;
-    top:25px;
-    left: 120px;
+    top:31px;
+    left: 99px;
 }
 
 #projection > div{
@@ -451,7 +451,7 @@ svg:has(>.path.done) + div{
 
 #start > div{
     position: absolute;
-    top:6px;
+    top:16px;
     left: 16px;
 }
 
@@ -581,7 +581,7 @@ svg:has(>.path.done) + div{
     left: 50px;
 }
 
-#nep_res{
+#nep_resComp{
     position:absolute;
     top: 176px;
     left: -1217px;
