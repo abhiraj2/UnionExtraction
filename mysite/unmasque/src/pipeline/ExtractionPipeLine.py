@@ -40,8 +40,8 @@ class ExtractionPipeLine(DisjunctionPipeLine,
         self.global_pk_dict = None
         self.pgao_ctx = PGAOcontext()
 
-    def process(self, query: str):
-        return GenericPipeLine.process(self, query)
+    def process(self, query: str, speed: float):
+        return GenericPipeLine.process(self, query, speed)
 
     def doJob(self, query, qe=None):
         return GenericPipeLine.doJob(self, query, qe)
@@ -49,7 +49,7 @@ class ExtractionPipeLine(DisjunctionPipeLine,
     def verify_correctness(self, query, result):
         GenericPipeLine.verify_correctness(self, query, result)
 
-    def extract(self, query):
+    def extract(self, query, speed):
         self.connectionHelper.connectUsingParams()
         self.info[UNION] = "SKIPPED"
         '''
@@ -155,7 +155,6 @@ class ExtractionPipeLine(DisjunctionPipeLine,
         self.time_profile.update_for_aggregate(agg.local_elapsed_time, agg.app_calls)
         self.info[AGGREGATE] = agg.global_aggregated_attributes
         if not check:
-            self.update_state(ERROR)
             self.info[AGGREGATE] = None
             self.logger.info("Cannot find aggregations.")
         if not agg.done:
@@ -174,9 +173,8 @@ class ExtractionPipeLine(DisjunctionPipeLine,
         self.time_profile.update_for_order_by(ob.local_elapsed_time, ob.app_calls)
         self.info[ORDER_BY] = ob.orderBy_string
         if not ob.has_orderBy:
-            self.update_state(ERROR)
             self.info[ORDER_BY] = None
-            self.logger.info("Cannot find aggregations.")
+            self.logger.info("No Order By.")
         if not ob.done:
             self.update_state(ERROR)
             self.info[ORDER_BY] = None

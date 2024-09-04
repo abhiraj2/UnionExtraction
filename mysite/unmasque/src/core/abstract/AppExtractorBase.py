@@ -17,7 +17,9 @@ class AppExtractorBase(Base, ABC):
         if self.enabled:
             self.app_calls = self.app.method_call_count
             self.result = self.doActualJob(args)
+            self.logger.debug("Passed Actual Job")
             self.app_calls = self.app.method_call_count - self.app_calls
+            self.logger.debug("App Calls After")
             return self.result
         self.logger.debug("Feature is not enabled!")
         return True

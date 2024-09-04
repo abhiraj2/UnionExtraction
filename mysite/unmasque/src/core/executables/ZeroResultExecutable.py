@@ -18,11 +18,11 @@ class ZeroResultExecutable(Executable):
         return not self.isQ_result_empty(Res)
 
     def isQ_result_empty(self, Res):
-        if len(Res) == 2:
-            data = Res[-1]
-            check = all(val in [0, '0', None, 'None'] for val in data)
-            if check:
-                return True
+        # if len(Res) == 2:
+        #     data = Res[-1]
+        #     check = all(val in [0, '0', None, 'None'] for val in data)
+        #     if check:
+        #         return True
         return super().isQ_result_empty(Res)
 
     def isQ_result_has_no_data(self, Res):

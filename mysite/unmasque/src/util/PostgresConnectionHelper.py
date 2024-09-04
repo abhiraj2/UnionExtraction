@@ -113,8 +113,8 @@ class PostgresConnectionHelper(AbstractConnectionHelper):
     def cus_execute_sqls(self, cur, sqls, logger=None):
         # print(cur)
         for sql in sqls:
-            # if logger is not None:
-            #    logger.debug("..cur execute.." + sql)
+            if logger is not None:
+               logger.debug("..cur execute.." + sql)
             try:
                 cur.execute(sql)
             except psycopg2.ProgrammingError as e:
